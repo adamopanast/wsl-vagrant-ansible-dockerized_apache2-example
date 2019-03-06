@@ -5,7 +5,16 @@
   file:
     path: /opt/apache_container
     state: directory
-    
+
+- name: http folder
+  become: yes
+  file:
+    path: /opt/apache_container./public-html/
+    state: directory
+
+- name: index html
+  template: src=index.html.j2 dest=/opt/apache_container./public-html/index.html    
+
 - name: Dockerfile
   template: src=Dockerfile.j2 dest=/opt/apache_container/Dockerfile
 
