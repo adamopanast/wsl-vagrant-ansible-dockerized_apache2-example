@@ -1,0 +1,25 @@
+---
+
+- name: create folder
+  become: yes
+  file:
+    path: /opt/apache_container
+    state: directory
+    
+- name: Dockerfile
+  template: src=Dockerfile.j2 dest=/opt/apache_container/Dockerfile
+
+- name: build the image
+  docker_image: >
+    name=my-apache2
+    path=/opt/apache_container
+    state=present
+
+- name: up and running
+  docker_container:
+    name: my-apache2-container
+    image: my-apache2
+    state: started
+    restart: yes
+    ports:
+      - "8080:80"  

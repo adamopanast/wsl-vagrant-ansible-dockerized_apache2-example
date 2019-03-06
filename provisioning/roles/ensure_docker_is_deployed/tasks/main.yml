@@ -7,7 +7,7 @@
     update_cache: yes
     force_apt_get: yes
 
-- name: install docker dependencies
+- name: docker dependencies
   become: yes
   apt:
     name: "{{ docker_dependencies }}"
@@ -24,27 +24,31 @@
       - gnupg2
       - curl
 
-- name: for the docker apt key
+- name: docker apt key
   become: yes
   apt_key: 
     url: https://download.docker.com/linux/debian/gpg
     state: present
 
-- name: add docker official repo
+- name: docker official repo
   become: yes
   apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
     state: present
 
-- name: install docker
+- name: docker
   become: yes 
   apt:
     name: "docker-ce"
     state: latest
 
-- name: install docker compose
+- name: docker compose
   become: yes 
   get_url:
     url: https://github.com/docker/compose/releases/download/1.22.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
+
+- name: docker-py
+  pip: name=docker-py
+

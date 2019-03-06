@@ -1,0 +1,25 @@
+---
+
+- name: install python3
+  become: yes
+  apt:
+    name: python3
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
+
+- name: install python setup tools
+  become: yes
+  apt:
+    name: python-setuptools
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
+
+- name: install pip
+  become: yes
+  apt:
+    name: python3-pip
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
