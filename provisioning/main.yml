@@ -1,0 +1,7 @@
+---
+
+- name: set the box
+  hosts: app01
+  become: yes
+  roles:
+    - ensure_docker_is_deployed

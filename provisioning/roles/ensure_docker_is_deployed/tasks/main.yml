@@ -1,0 +1,50 @@
+---
+
+- name: update box
+  become: yes
+  apt:
+    name: "*"
+    update_cache: yes
+    force_apt_get: yes
+
+- name: install docker dependencies
+  become: yes
+  apt:
+    name: "{{ docker_dependencies }}"
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
+  vars:
+    docker_dependencies:
+      - git
+      - apt-transport-https
+      - ca-certificates
+      - wget
+      - software-properties-common
+      - gnupg2
+      - curl
+
+- name: for the docker apt key
+  become: yes
+  apt_key: 
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: add docker official repo
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
+    state: present
+
+- name: install docker
+  become: yes 
+  apt:
+    name: "docker-ce"
+    state: latest
+
+- name: install docker compose
+  become: yes 
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.22.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
