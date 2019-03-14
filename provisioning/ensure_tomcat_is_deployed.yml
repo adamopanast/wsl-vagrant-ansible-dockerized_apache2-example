@@ -1,0 +1,17 @@
+---
+
+- hosts: all
+  vars: 
+    http_port: 8080
+    app_name: test
+    deployment_path: "/opt{{ app_name }}"
+  remote_user: root
+  tasks:
+    - name: ensure deployment path exists
+      file:
+        path: {{deployment_path }}
+        state: directory
+    - name: ensure dockerfile exists
+      file
+      
+        

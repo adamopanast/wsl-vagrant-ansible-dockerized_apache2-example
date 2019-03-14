@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
 	end
 	config.vm.box = "ubuntu/xenial64"
 	config.vm.synced_folder '.', '/vagrant', disabled: true
-	config.vm.define "app01" do |vm1|
+	config.vm.define "web00" do |vm1|
 		vm1.vm.network "private_network", ip: "192.168.33.20"
 	end
 	config.vm.provision "ansible" do |ansible|

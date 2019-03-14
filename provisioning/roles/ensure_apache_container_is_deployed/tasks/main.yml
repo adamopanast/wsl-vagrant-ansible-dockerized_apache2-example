@@ -1,5 +1,4 @@
 ---
-
 - name: create folder
   become: yes
   file:
@@ -18,16 +17,32 @@
 - name: Dockerfile
   template: src=Dockerfile.j2 dest=/opt/apache_container/Dockerfile
 
-- name: build the image
-  docker_image: >
-    name=my-apache2
-    path=/opt/apache_container
-    state=present
+- name: Check for containers that actually exist
+  shell: 'docker ps -aq --filter "name=my-apache2"'
+  register: found_containers
 
-- name: up and running
+- name: Remove the containers found by the above command
+  shell: 'docker stop {{ item }} && docker rm -fv {{ item}}'
+  with_items: '{{ found_containers.stdout }}'
+  when: found_containers
+
+- name: build docker image
+  docker_image:
+    name: my-apache2
+    path: /opt/apache_container
+    nocache: yes
+    rm: yes
+    state: present
+    tag: test-apache2
+    force: true
+  register: image_build
+#  changed_when: image_id.stdout != image_build.image.Id
+
+- name: create container
   docker_container:
     name: my-apache2-container
     image: my-apache2
+    recreate: '{{ True if image_build.changed else omit }}'
     state: started
     restart: yes
     ports:
