@@ -1,0 +1,6 @@
+---
+
+- include_tasks: ensure_python3_is_installed.yml
+- include_tasks: ensure_docker_is_deployed.yml
+- include_tasks: ensure_apache_container_is_deployed.yml
+

@@ -4,6 +4,4 @@
   hosts: app01
   become: yes
   roles:
-    - ensure_python3_is_installed
-    - ensure_docker_is_deployed
-    - ensure_apache_container_is_deployed
+    - test_server
